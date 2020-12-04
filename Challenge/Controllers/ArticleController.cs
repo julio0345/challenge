@@ -29,7 +29,7 @@ namespace Challenge.Controllers
 
         [HttpPut]
         [Route("[action]/{idArticle}")]
-        public long Like(int idArticle)
+        public long GetLikes(int idArticle)
         {
             Article article = dao.GetById(idArticle);
             
@@ -48,6 +48,29 @@ namespace Challenge.Controllers
             }
 
             return article.Like;
+        }
+
+        [HttpPut]
+        [Route("[action]/{idArticle}")]
+        public Article LikeModel(int idArticle)
+        {
+            Article article = dao.GetById(idArticle);
+
+            if (article != null)
+            {
+                article.Like++;
+                dao.Update(article);
+            }
+            else
+            {
+                article = new Article();
+                article.Id = idArticle;
+                article.Like = 1;
+
+                dao.Insert(article);
+            }
+
+            return article;
         }
     }
 }
